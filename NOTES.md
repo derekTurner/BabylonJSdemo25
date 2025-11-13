@@ -10,3 +10,9 @@ babylonProj/meshes01/
 
 ## Files to reference during demos
 babylonProj/village/
+
+## In development
+Player - uses asset loader to load GLTF models of trees
+
+Player01 - trying for player motion.
+
