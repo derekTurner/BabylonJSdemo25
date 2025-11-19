@@ -12,7 +12,8 @@ babylonProj/meshes01/
 babylonProj/village/
 
 ## In development
-Player - uses asset loader to load GLTF models of trees
+Player01 - uses asset loader to load GLTF models of trees
 
-Player01 - trying for player motion.
+Player02 - adds character controller and physics aggregate ground.
 
+Player03 - try to add physics aggreegate to the trees

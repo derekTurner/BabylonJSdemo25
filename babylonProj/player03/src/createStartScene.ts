@@ -1,6 +1,7 @@
 //import "@babylonjs/core/Debug/debugLayer";
 //import "@babylonjs/inspector";
 import "@babylonjs/loaders/glTF/2.0";
+import HavokPhysics, { HavokPhysicsWithBindings } from "@babylonjs/havok";
 import {
   Scene,
   ArcRotateCamera,
@@ -11,8 +12,14 @@ import {
   Mesh,
   Camera,
   Engine,
+  HavokPlugin,
+  PhysicsAggregate,
+  PhysicsShapeType,
+  Color3,
+  StandardMaterial,
+  Texture,
 } from "@babylonjs/core";
-import { taaPixelShader } from "@babylonjs/core/Shaders/taa.fragment";
+
 
 function createLight(scene: Scene) {
   const light = new HemisphericLight("light", new Vector3(0, 1, 0), scene);
@@ -26,6 +33,9 @@ function createGround(scene: Scene) {
     { width: 16, height: 16 },
     scene
   );
+  
+    // Create a static box shape.
+  let groundAggregate = new PhysicsAggregate(ground, PhysicsShapeType.BOX, { mass: 0 }, scene);
   return ground;
 }
 
@@ -46,6 +56,38 @@ function createArcRotateCamera(scene: Scene) {
   return camera;
 }
 
+function createBox1(scene: Scene) {
+  let box = MeshBuilder.CreateBox("box", { width: 1, height: 1 }, scene);
+  box.position.x = -1;
+  box.position.y = 3;
+  box.position.z = 1;
+
+  var texture = new StandardMaterial("reflective", scene);
+  texture.ambientTexture = new Texture(
+    "./assets/textures/wood.jpg",
+    scene
+  );
+  texture.diffuseColor = new Color3(1, 1, 1);
+  box.material = texture;
+  return box;
+}
+
+function createBox2(scene: Scene) {
+  let box = MeshBuilder.CreateBox("box", { width: 1, height: 1 }, scene);
+  box.position.x = -0.7;
+  box.position.y = 5;
+  box.position.z = 1;
+
+  var texture = new StandardMaterial("reflective", scene);
+  texture.ambientTexture = new Texture(
+    "./assets/textures/wood.jpg",
+    scene
+  );
+  texture.diffuseColor = new Color3(1, 1, 1);
+  box.material = texture;
+  return box;
+}
+
 function addAssets(scene: Scene) {
   // add assets here
   const assetsManager = new AssetsManager(scene);
@@ -56,11 +98,19 @@ function addAssets(scene: Scene) {
     "CommonTree_1.gltf"
   );
   tree1.onSuccess = function (task) {
-    task.loadedMeshes[0].position = new Vector3(3, 0, 2);
-    task.loadedMeshes[0].scaling = new Vector3(0.5, 0.5, 0.5);
-        // Clone tree1
-    const tree1Clone = task.loadedMeshes[0].clone("tree1_clone", null);
+    const root = task.loadedMeshes[0];
+    root.position = new Vector3(3, 0, 2);
+    root.scaling = new Vector3(0.5, 0.5, 0.5);
+    // Ensure all child meshes are visible
+    task.loadedMeshes.forEach((mesh: any) => {
+      mesh.isVisible = true;
+    });
+    //new PhysicsAggregate(root, PhysicsShapeType.MESH, {mass: 0}, scene);
+    
+    // Clone tree1
+    const tree1Clone = root.clone("tree1_clone", null);
     tree1Clone!.position = new Vector3(0, 0, 5);
+    //new PhysicsAggregate(tree1Clone!, PhysicsShapeType.MESH, {mass: 0}, scene);
   };
 
   const tree2 = assetsManager.addMeshTask(
@@ -72,7 +122,7 @@ function addAssets(scene: Scene) {
   tree2.onSuccess = function (task) {
     task.loadedMeshes[0].position = new Vector3(0, 0, 2);
     task.loadedMeshes[0].scaling = new Vector3(0.5, 0.5, 0.5);
-        // Clone tree2
+    // Clone tree2
     const tree2Clone = task.loadedMeshes[0].clone("tree2_clone", null);
     tree2Clone!.position = new Vector3(-3, 0, 5);
   };
@@ -101,20 +151,36 @@ function addAssets(scene: Scene) {
   return assetsManager;
 }
 
-export default function createStartScene(engine: Engine) {
+
+export default async function createStartScene(engine: Engine) {
   interface SceneData {
     scene: Scene;
     light?: HemisphericLight;
     ground?: Mesh;
     camera?: Camera;
+    box1?:Mesh;
+    box2?:Mesh;
   }
 
   let that: SceneData = { scene: new Scene(engine) };
+
+  let initializedHavok: any;
+
+  HavokPhysics().then((havok) => {
+    initializedHavok = havok;
+  });
+
+  const havokInstance: HavokPhysicsWithBindings = await HavokPhysics();
+  const hk: HavokPlugin = new HavokPlugin(true, havokInstance);
+  that.scene.enablePhysics(new Vector3(0, -9.81, 0), hk);
+
   //that.scene.debugLayer.show();
 
   that.light = createLight(that.scene);
   that.ground = createGround(that.scene);
   that.camera = createArcRotateCamera(that.scene);
+  that.box1 = createBox1(that.scene);
+  that.box2 = createBox2(that.scene);
   const assetsManager = addAssets(that.scene);
   assetsManager.load();
   return that;

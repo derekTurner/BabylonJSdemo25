@@ -10,4 +10,6 @@ export interface SceneData {
       light?: HemisphericLight;
       ground?: Mesh;
       camera?: Camera;
+      box1?:Mesh;
+      box2?:Mesh;
 }

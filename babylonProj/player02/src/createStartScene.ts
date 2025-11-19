@@ -17,6 +17,8 @@ import {
   Quaternion,
   CharacterSupportedState,
   KeyboardEventTypes,
+  PhysicsAggregate,
+  PhysicsShapeType,
 } from "@babylonjs/core";
 import { taaPixelShader } from "@babylonjs/core/Shaders/taa.fragment";
 
@@ -34,6 +36,9 @@ function createGround(scene: Scene) {
     { width: 16, height: 16 },
     scene
   );
+  
+    // Create a static box shape.
+  let groundAggregate = new PhysicsAggregate(ground, PhysicsShapeType.BOX, { mass: 0 }, scene);
   return ground;
 }
 
