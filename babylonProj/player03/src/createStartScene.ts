@@ -69,7 +69,9 @@ function createBox1(scene: Scene) {
   );
   texture.diffuseColor = new Color3(1, 1, 1);
   box.material = texture;
+  new PhysicsAggregate(box, PhysicsShapeType.BOX, {mass: 0.2, restitution:0.1, friction:0.4}, scene);
   return box;
+
 }
 
 function createBox2(scene: Scene) {
@@ -85,6 +87,7 @@ function createBox2(scene: Scene) {
   );
   texture.diffuseColor = new Color3(1, 1, 1);
   box.material = texture;
+  new PhysicsAggregate(box, PhysicsShapeType.BOX, {mass: 0.2, restitution:0.1, friction:0.4}, scene);
   return box;
 }
 
