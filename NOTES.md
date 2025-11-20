@@ -16,4 +16,6 @@ Player01 - uses asset loader to load GLTF models of trees
 
 Player02 - adds character controller and physics aggregate ground.
 
-Player03 - try to add physics aggreegate to the trees
+Player03 - added two boxes with physics which interact with the character controller.  Added a gui which shows pre defined text and a button, but not changing display
+
+Player04 - added boxes and collision detection which is listed on the gui.
