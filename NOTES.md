@@ -11,7 +11,14 @@ babylonProj/meshes01/
 ## Files to reference during demos
 babylonProj/village/
 
-## In development
+## Week 11
+
+Dude needs reworking for new loader and audio engine
+Motion 01 
+
+
+
+## Week 10
 Player01 - uses asset loader to load GLTF models of trees
 
 Player02 - adds character controller and physics aggregate ground.
