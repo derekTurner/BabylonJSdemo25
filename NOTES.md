@@ -31,3 +31,5 @@ Player04 - added boxes and collision detection which is listed on the gui.
 ## Brought forward
 Gui 01 - basic gui with text and button
 Gui 04 - basic gui with text and button and slider
+
+collision notes line 17 createstartscreen missing

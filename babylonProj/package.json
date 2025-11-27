@@ -6,7 +6,13 @@
   "scripts": {
     "dev": "vite --host",
     "build": "tsc && vite build",
-    "preview": "vite preview --host"
+    "preview": "vite preview --host",
+    "villagebuild": "tsc && vite build village",
+    "villagepreview": "vite preview village --host",
+    "collisionbuild": "tsc && vite build collision",
+    "collisionpreview": "vite preview collision --host",
+    "player04build": "tsc && vite build player04",
+    "player04preview": "vite preview player04 --host"
   },
   "devDependencies": {
     "typescript": "~5.8.3",
