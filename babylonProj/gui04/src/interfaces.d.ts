@@ -1,19 +1,20 @@
 import {
   Scene,
-  Sound,
+  StaticSound,
   Mesh,
   HemisphericLight,
   Camera,
-  ISceneLoaderAsyncResult,
+  AbstractMesh,
+  AssetsManager,
 } from "@babylonjs/core";
 
 export interface SceneData {
   scene: Scene;
-  audio: Sound;
+  arcade: StaticSound;
   lightHemispheric: HemisphericLight;
   camera: Camera;
   box1: Mesh;
   box2: Mesh;
-  player: Promise<void | ISceneLoaderAsyncResult>;
+  assetManager: AssetsManager;
   ground: Mesh;
 }

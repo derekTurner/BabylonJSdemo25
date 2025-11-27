@@ -10,38 +10,56 @@ import {
   Color3,
   Engine,
   Texture,
-  SceneLoader,
+  AssetsManager,
   AbstractMesh,
-  ISceneLoaderAsyncResult,
   Sound,
+  ArcRotateCameraVRDeviceOrientationInput,
+  CreateSoundAsync,
+  CreateAudioEngineAsync,
+  StaticSound,
 } from "@babylonjs/core";
 import createRunScene from "./createRunScene";
 
-function backgroundMusic(scene: Scene): Sound{
-  let music = new Sound("music", "./assets/audio/arcade-kid.mp3", scene,  null ,
-   {
-      loop: true,
-      autoplay: true
+function backgroundMusic(scene: Scene): Sound {
+  let music = new Sound("music", "./assets/audio/arcade-kid.mp3", scene, null, {
+    loop: true,
+    autoplay: true,
   });
 
   Engine.audioEngine!.useCustomUnlockedButton = true;
 
   // Unlock audio on first user interaction.
-  window.addEventListener('click', () => {
-    if(!Engine.audioEngine!.unlocked){
+  window.addEventListener(
+    "click",
+    () => {
+      if (!Engine.audioEngine!.unlocked) {
         Engine.audioEngine!.unlock();
-    }
-}, { once: true });
+      }
+    },
+    { once: true }
+  );
   return music;
+}
+
+async function createStaticSound(): Promise<StaticSound> {
+  const audioEngine = await CreateAudioEngineAsync();
+  const arcade: StaticSound = await CreateSoundAsync(
+    "arcade",
+    "./assets/audio/arcade-kid.mp3"
+  );
+  // Wait until audio engine is ready to play sounds.
+  await audioEngine.unlockAsync();
+
+  return arcade;
 }
 
 function createGround(scene: Scene) {
   const groundMaterial = new StandardMaterial("groundMaterial");
   const groundTexture = new Texture("./assets/textures/wood.jpg");
-  groundTexture.uScale  = 4.0; //Repeat 5 times on the Vertical Axes
-  groundTexture.vScale  = 4.0; //Repeat 5 times on the Horizontal Axes
+  groundTexture.uScale = 4.0; //Repeat 5 times on the Vertical Axes
+  groundTexture.vScale = 4.0; //Repeat 5 times on the Horizontal Axes
   groundMaterial.diffuseTexture = groundTexture;
- // groundMaterial.diffuseTexture = new Texture("./assets/textures/wood.jpg");
+  // groundMaterial.diffuseTexture = new Texture("./assets/textures/wood.jpg");
   groundMaterial.diffuseTexture.hasAlpha = true;
 
   groundMaterial.backFaceCulling = false;
@@ -54,8 +72,6 @@ function createGround(scene: Scene) {
   ground.material = groundMaterial;
   return ground;
 }
-
-
 
 function createHemisphericLight(scene: Scene) {
   const light = new HemisphericLight(
@@ -126,48 +142,60 @@ function createBox2(scene: Scene) {
   return box;
 }
 
+function addAssets(scene: Scene, x: number, y: number, z: number) {
+  const assetsManager = new AssetsManager(scene);
+  
+  const meshTask = assetsManager.addMeshTask(
+    "character task",
+    "",
+    "./assets/models/men/",
+    "dummy3.babylon"
+  );
 
-function importMeshA(scene: Scene, x: number, y: number) {
-  let item: Promise<void | ISceneLoaderAsyncResult> =
-    SceneLoader.ImportMeshAsync(
-      "",
-      "./assets/models/men/",
-      "dummy3.babylon",
-      scene
+  let character: AbstractMesh | null = null;
+
+  meshTask.onSuccess = function (task) {
+    if (task.loadedMeshes.length > 0) {
+      character = task.loadedMeshes[0];
+      character.position = new Vector3(x,y,z);
+      character.scaling = new Vector3(1, 1, 1);
+      character.rotation = new Vector3(0, 1.5, 0);
+    }
+  };
+
+  assetsManager.onTaskErrorObservable.add(function (task) {
+    console.log(
+      "task failed",
+      task.errorObject.message,
+      task.errorObject.exception
     );
-
-  item.then((result) => {
-    let character: AbstractMesh = result!.meshes[0];
-    character.position.x = x;
-    character.position.y = y + 0.1;
-    character.scaling = new Vector3(1, 1, 1);
-    character.rotation = new Vector3(0, 1.5, 0);
-
   });
-  return item;
+  return assetsManager;
 }
 
-export default function gameScene(engine: Engine) {
+export default async function gameScene(engine: Engine) {
   let scene = new Scene(engine);
-  let audio = backgroundMusic(scene);
+  let arcade: StaticSound = await createStaticSound();
+
   let lightHemispheric = createHemisphericLight(scene);
   let camera = createArcRotateCamera(scene);
   let box1 = createBox1(scene);
   let box2 = createBox2(scene);
-  let player = importMeshA(scene, 0, 0);
+  let assetManager = await addAssets(scene, 0, 0, 0);
   let ground = createGround(scene);
 
   let that: SceneData = {
     scene,
-    audio,
+    arcade,
     lightHemispheric,
     camera,
     box1,
     box2,
-    player,
+    assetManager,
     ground,
   };
 
-  createRunScene(that);
+  
+
   return that;
 }

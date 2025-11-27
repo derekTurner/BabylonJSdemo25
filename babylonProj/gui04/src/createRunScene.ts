@@ -48,10 +48,14 @@ export default function createRunScene(runScene: SceneData) {
     10000,
     0.1
   );
-  runScene.audio.stop();
+  runScene.arcade.stop();
+  
 
   // add baked in animations to player
-  runScene.player.then((result) => {
+  runScene.assetManager
+  
+  
+  .then((result) => {
     let skeleton: Skeleton = result!.skeletons[0];
     bakedAnimations(runScene.scene, skeleton);
   });
