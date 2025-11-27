@@ -26,3 +26,8 @@ Player02 - adds character controller and physics aggregate ground.
 Player03 - added two boxes with physics which interact with the character controller.  Added a gui which shows pre defined text and a button, but not changing display
 
 Player04 - added boxes and collision detection which is listed on the gui.
+
+
+## Brought forward
+Gui 01 - basic gui with text and button
+Gui 04 - basic gui with text and button and slider
