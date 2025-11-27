@@ -33,3 +33,5 @@ Gui 01 - basic gui with text and button
 Gui 04 - basic gui with text and button and slider
 
 collision notes line 17 createstartscreen missing
+
+setText missing form gui player 04
