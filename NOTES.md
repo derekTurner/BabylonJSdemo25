@@ -27,7 +27,9 @@ Player03 - added two boxes with physics which interact with the character contro
 
 Player04 - added boxes and collision detection which is listed on the gui.
 
+## week 11 
+multi scene 4 way split
 
 ## Brought forward
 Gui 01 - basic gui with text and button
-Gui 04 - basic gui with text and button and slider
+Gui 04 - now working - needs audio added to click button and pysics to scene.

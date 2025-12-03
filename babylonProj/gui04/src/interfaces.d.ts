@@ -10,7 +10,7 @@ import {
 
 export interface SceneData {
   scene: Scene;
-  arcade: StaticSound;
+  //arcade: StaticSound;
   lightHemispheric: HemisphericLight;
   camera: Camera;
   box1: Mesh;
