@@ -12,7 +12,9 @@
     "collisionbuild": "tsc && vite build collision",
     "collisionpreview": "vite preview collision --host",
     "player04build": "tsc && vite build player04",
-    "player04preview": "vite preview player04 --host"
+    "player04preview": "vite preview player04 --host",
+    "multibuild": "tsc && vite build player04",
+    "multipreview": "vite preview player04 --host"
   },
   "devDependencies": {
     "typescript": "~5.8.3",

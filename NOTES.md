@@ -8,6 +8,10 @@ babylonProj/meshes01/
 
 ## Files as refined demos
 
+## Week 9
+element 1 - shapes motion lighting texture 
+use 
+
 ## Files to reference during demos
 babylonProj/village/
 
@@ -37,7 +41,8 @@ Player03 - added two boxes with physics which interact with the character contro
 Player04 - added boxes and collision detection which is listed on the gui.
 
 ## week 11 
-multi scene 4 way split
+multi scene 4 way split scenes
+build as element 4
 
 ## Brought forward
 Gui 01 - basic gui with text and button
