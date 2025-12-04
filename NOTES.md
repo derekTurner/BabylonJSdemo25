@@ -13,8 +13,17 @@ babylonProj/village/
 
 ## Week 11
 
-Dude needs reworking for new loader and audio engine
-Motion 01 
+motion 01 dude moves WASD file uses old scene loader and audio elements are removed as the old audio engine is replaced in babylonJS version 8
+
+This  needs reworking for new loader and audio engine
+
+the notes on keymotion have been updated and should be set back to the old notes. 
+
+Motion02 - adds pick motion to spin the player around the y axis.
+
+Motion03 - adds baked animations to the player mesh.
+
+
 
 
 
@@ -33,3 +42,9 @@ multi scene 4 way split
 ## Brought forward
 Gui 01 - basic gui with text and button
 Gui 04 - now working - needs audio added to click button and physics to scene.
+
+
+# Not yet working
+keyAction - a reworking of moving a player with keyboard input - createStartScene is blank.
+
+Avatar01 - intending to carry on from Player 04 and to add a farmer character as a child of the character controller display element.
