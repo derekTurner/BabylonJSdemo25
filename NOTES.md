@@ -32,4 +32,4 @@ multi scene 4 way split
 
 ## Brought forward
 Gui 01 - basic gui with text and button
-Gui 04 - now working - needs audio added to click button and pysics to scene.
+Gui 04 - now working - needs audio added to click button and physics to scene.
