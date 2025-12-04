@@ -175,7 +175,7 @@ function addAssets(scene: Scene, x: number, y: number, z: number) {
 
 export default async function gameScene(engine: Engine) {
   let scene = new Scene(engine);
-  let arcade: StaticSound = await createStaticSound();
+  //let arcade: StaticSound = await createStaticSound();
 
   let lightHemispheric = createHemisphericLight(scene);
   let camera = createArcRotateCamera(scene);
@@ -186,7 +186,7 @@ export default async function gameScene(engine: Engine) {
 
   let that: SceneData = {
     scene,
-    arcade,
+    //arcade,
     lightHemispheric,
     camera,
     box1,

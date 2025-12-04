@@ -11,19 +11,27 @@ canvas.id = CanvasName;
 canvas.classList.add("background-canvas");
 document.body.appendChild(canvas);
 
-let scene;
+let currentSceneIndex = 0;
 let scenes: any[] = [];
 
 let eng = new Engine(canvas, true, {}, true);
 
 scenes[0] = menuScene(eng);
-scenes[1] = gameScene(eng);
+scenes[1] = await gameScene(eng);
 
-scene = scenes[0].scene;
-setSceneIndex(0);
+
+// Single render loop
+eng.runRenderLoop(() => {
+  scenes[currentSceneIndex].scene.render();
+});
 
 export default function setSceneIndex(i: number) {
-  eng.runRenderLoop(() => {
-      scenes[i].scene.render();
-  });
-}   
+  console.log("setSceneIndex", i);
+  
+  // Dispose previous scene
+  if (scenes[currentSceneIndex]) {
+    scenes[currentSceneIndex].scene.dispose();
+  }
+  
+  currentSceneIndex = i;
+}

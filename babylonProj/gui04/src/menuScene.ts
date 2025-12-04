@@ -18,10 +18,11 @@ import {
     Sound
   } from "@babylonjs/core";
   import * as GUI from "@babylonjs/gui";
+import { AdvancedDynamicTexture } from "@babylonjs/gui";
  
   //----------------------------------------------------
 
-  function createText(scene: Scene, theText: string, x: string, y: string, s: string, c: string, advtex) {
+  function createText(scene: Scene, theText: string, x: string, y: string, s: string, c: string, advtex: AdvancedDynamicTexture) {
     let text = new GUI.TextBlock();
     text.text = theText;
     text.color = c;
@@ -33,7 +34,7 @@ import {
     return text;
   }
 
-  function createRectangle(scene: Scene, w: string, h: string, x: string, y: string, cr: number, c: string, t: number, bg: string, advtext) {
+  function createRectangle(scene: Scene, w: string, h: string, x: string, y: string, cr: number, c: string, t: number, bg: string, advtex: AdvancedDynamicTexture) {
     let rectangle = new GUI.Rectangle();
     rectangle.width = w;
     rectangle.height = h;
@@ -43,11 +44,11 @@ import {
     rectangle.color = c;
     rectangle.thickness = t;
     rectangle.background = bg;
-    advtext.addControl(rectangle);
+    advtex.addControl(rectangle);
     return rectangle;
   }
 
-  function createSceneButton(scene: Scene, name: string, index: string, x: string, y: string, advtex) {
+  function createSceneButton(scene: Scene, name: string, index: string, x: string, y: string, advtex: AdvancedDynamicTexture) {
     let button = GUI.Button.CreateSimpleButton(name, index);
         button.left = x;
         button.top = y;
@@ -57,14 +58,15 @@ import {
         button.cornerRadius = 20;
         button.background = "purple";
 
-        const buttonClick = new Sound("MenuClickSFX", "./audio/menu-click.wav", scene, null, {
-          loop: false,
-          autoplay: false,
-        });
+ //       const buttonClick = new Sound("MenuClickSFX", "./audio/menu-click.wav", scene, null, {
+ //         loop: false,
+ //         autoplay: false,
+ //       });
 
         button.onPointerUpObservable.add(function() {
             console.log("THE BUTTON HAS BEEN CLICKED");
-            buttonClick.play();
+            advtex!.layer!.isEnabled = false;
+  //          buttonClick.play();
             setSceneIndex(1);
         });
         advtex.addControl(button);
@@ -121,11 +123,11 @@ import {
       button1: GUI.Button;
       button2: GUI.Button;
       skybox: Mesh;
-      hemiLight: HemisphericLight;
+      hemiLight?: HemisphericLight;
       camera: Camera;
     }
   
-    //let that: SceneData = { scene: new Scene(engine) };
+    
     
     //----------------------------------------------------------
     let scene = new Scene(engine);

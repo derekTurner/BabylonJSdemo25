@@ -8,10 +8,10 @@ import {
   Rectangle,
 } from "@babylonjs/gui/2D";
 
-var text1!: TextBlock; // recieves external messages
-var text2!: TextBlock; // recieves external messages
-var text3!: TextBlock; // recieves external messages
-var text4!: TextBlock; // recieves external messages
+var text1!: TextBlock; // modified by setText(newtext: string, index: number)
+var text2!: TextBlock; // modified by setText(newtext: string, index: number)
+var text3!: TextBlock; // modified by setText(newtext: string, index: number)
+var text4!: TextBlock; // modified by setText(newtext: string, index: number)
 var heading1!: TextBlock;
 
 function createSceneButton(
@@ -156,13 +156,7 @@ export function gui(scene: Scene): void {
 
   advancedTexture.addControl(grid);
 
-  scene.registerBeforeRender(() => {
-    // cant get to gui
-    // let mystash = scene.getExternalData("stash") as { [key: string]: string };
-    // try { text1.text = mystash.message; } catch {}
-    // try { text2.text = mystash.x; } catch {}// Desired direction
-    // try { text3.text = mystash.z; } catch {}// Desired direction
-  });
+  scene.registerBeforeRender(() => {});
 }
 
 export function setText(newtext: string, index: number) {
