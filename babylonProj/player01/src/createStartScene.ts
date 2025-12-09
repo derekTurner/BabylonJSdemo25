@@ -11,6 +11,8 @@ import {
   Mesh,
   Camera,
   Engine,
+  MeshAssetTask,
+  AbstractMesh,
 } from "@babylonjs/core";
 import { taaPixelShader } from "@babylonjs/core/Shaders/taa.fragment";
 
@@ -49,7 +51,7 @@ function createArcRotateCamera(scene: Scene) {
 function addAssets(scene: Scene) {
   // add assets here
   const assetsManager = new AssetsManager(scene);
-  const tree1 = assetsManager.addMeshTask(
+  const tree1:MeshAssetTask = assetsManager.addMeshTask(
     "tree1 task",
     "",
     "./assets/nature/gltf/",
@@ -63,7 +65,7 @@ function addAssets(scene: Scene) {
     tree1Clone!.position = new Vector3(0, 0, 5);
   };
 
-  const tree2 = assetsManager.addMeshTask(
+  const tree2:MeshAssetTask = assetsManager.addMeshTask(
     "tree1 task",
     "",
     "./assets/nature/gltf/",
@@ -77,7 +79,7 @@ function addAssets(scene: Scene) {
     tree2Clone!.position = new Vector3(-3, 0, 5);
   };
 
-  const tree3 = assetsManager.addMeshTask(
+  const tree3:MeshAssetTask = assetsManager.addMeshTask(
     "tree1 task",
     "",
     "./assets/nature/gltf/",
