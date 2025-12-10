@@ -19,7 +19,6 @@ function createSceneButton(
   index: string,
   x: string,
   y: string
-  //advtex: { addControl: (arg0: Button) => void }
 ) {
   var button: Button = Button.CreateSimpleButton(name, index);
   button.left = x;
@@ -76,30 +75,13 @@ export function gui(scene: Scene): void {
   let advancedTexture: AdvancedDynamicTexture =
     AdvancedDynamicTexture.CreateFullscreenUI("scene4UI", true, scene);
   
-  // Debug: simple test to verify GUI is working
-  const testText = new TextBlock();
-  testText.text = "Scene 4 GUI Active";
-  testText.color = "yellow";
-  testText.fontSize = 30;
-  testText.top = "200px";
-  advancedTexture.addControl(testText);
-  console.log("GUI texture created for scene4");
 
   let button1: Button = createSceneButton(
     "button1",
     "Click Me!",
     "0px",
     "0px"
-    //advancedTexture
   );
-  //advancedTexture.addControl(button1); // button 1 could be added to the scene or grid
-
-  //add text block
-  //https://playground.babylonjs.com/#2ARI2W#10 //high resolution text//
-  // Removed scaling - was causing GUI not to render properly
-  // scene.getEngine().setHardwareScalingLevel(1 / window.devicePixelRatio);
-  // advancedTexture.rootContainer.scaleX = window.devicePixelRatio;
-  // advancedTexture.rootContainer.scaleY = window.devicePixelRatio;
 
   heading1 = createTextBlock("heading1", "Hello World", "1px", "1px");
   text1 = createTextBlock("text1", "Debug", "1px", "1px");
@@ -107,7 +89,6 @@ export function gui(scene: Scene): void {
   text3 = createTextBlock("text3", "Debug", "1px", "1px");
   text4 = createTextBlock("text4", "Debug", "1px", "1px");
 
-  // advancedTexture.addControl(this.heading1); // text1 block could be added to the scene or grid
 
   //https://doc.babylonjs.com/features/featuresDeepDive/gui/gui#grid
   // Create a grid, Pointer will then only apply to the grid and not the whole screen.
