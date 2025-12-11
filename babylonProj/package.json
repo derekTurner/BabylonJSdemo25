@@ -14,7 +14,9 @@
     "player04build": "tsc && vite build player04",
     "player04preview": "vite preview player04 --host",
     "multibuild": "tsc && vite build player04",
-    "multipreview": "vite preview player04 --host"
+    "multipreview": "vite preview player04 --host",
+    "multihavokbuild": "tsc && vite build multihavok",
+    "multihavokpreview": "vite preview multihavok --host"
   },
   "devDependencies": {
     "typescript": "~5.8.3",
