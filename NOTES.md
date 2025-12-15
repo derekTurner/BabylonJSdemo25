@@ -37,12 +37,16 @@ Player01 - uses asset loader to load GLTF models of trees
 Player02 - adds character controller and physics aggregate ground.
 
 Player03 - added two boxes with physics which interact with the character controller.  Added a gui which shows pre defined text and a button, but not changing display
+trees now have physics aggregate on merged meshes.            
 
 Player04 - added boxes and collision detection which is listed on the gui.
 
 ## week 11 
 multi scene 4 way split scenes
 build as element 4
+
+## week 13
+multiHavok arranges so that multiscenes are possible with havok
 
 ## Brought forward
 Gui 01 - basic gui with text and button

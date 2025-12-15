@@ -92,58 +92,88 @@ function createBox2(scene: Scene) {
   return box2Aggregate;
 }
 
+function mergeAndAggregate(mesh: AbstractMesh[], scene: Scene) {
+  // Filter meshes with geometry
+  const meshesWithGeometry = mesh.filter(
+    (m): m is Mesh => m instanceof Mesh && m.getTotalVertices() > 0
+  );
+
+  if (meshesWithGeometry.length > 0) {
+    // MergeMeshes bakes world transforms into vertices, so merged mesh stays at origin
+    const mergedMesh = Mesh.MergeMeshes(meshesWithGeometry, true, true, undefined, false, true);
+    if (mergedMesh) {
+      // Position is already baked into vertices - don't transform again
+      new PhysicsAggregate(mergedMesh, PhysicsShapeType.MESH, { mass: 0 }, scene);
+    }
+  }
+}
+
 function addAssets(scene: Scene) {
-  // add assets here
+  // add fixed scene objects here (mass 0)
   const assetsManager = new AssetsManager(scene);
   const tree1 = assetsManager.addMeshTask(
     "tree1 task",
     "",
-    "./assets/nature/glTF/",
+    "./assets/nature/gltf/",
     "CommonTree_1.gltf"
   );
   tree1.onSuccess = function (task) {
     const root = task.loadedMeshes[0];
-    root.position = new Vector3(3, 0, 2);
-    root.scaling = new Vector3(0.5, 0.5, 0.5);
-    // Ensure all child meshes are visible
-    task.loadedMeshes.forEach((mesh: any) => {
-      mesh.isVisible = true;
-    });
-    //new PhysicsAggregate(root, PhysicsShapeType.MESH, {mass: 0}, scene);
-    
-    // Clone tree1
     const tree1Clone = root.clone("tree1_clone", null);
-    tree1Clone!.position = new Vector3(0, 0, 5);
-    //new PhysicsAggregate(tree1Clone!, PhysicsShapeType.MESH, {mass: 0}, scene);
+    // tree1
+    root.position = new Vector3(5, 0, 2);
+    root.scaling = new Vector3(0.9, 0.9, 0.9);
+    mergeAndAggregate(task.loadedMeshes, scene );
+    // Cloned tree1
+    tree1Clone!.position = new Vector3(0, 0, 6);
+    tree1Clone!.scaling = new Vector3(0.8, 0.8, 0.8);
+    // Get clone and all its child meshes as an array
+    const cloneMeshes = [tree1Clone!, ...tree1Clone!.getChildMeshes()];
+    mergeAndAggregate(cloneMeshes, scene);
+    
   };
 
+ 
   const tree2 = assetsManager.addMeshTask(
-    "tree1 task",
+    "tree2 task",
     "",
-    "./assets/nature/glTF/",
+    "./assets/nature/gltf/",
     "CommonTree_2.gltf"
   );
   tree2.onSuccess = function (task) {
-    task.loadedMeshes[0].position = new Vector3(0, 0, 2);
-    task.loadedMeshes[0].scaling = new Vector3(0.5, 0.5, 0.5);
-    // Clone tree2
-    const tree2Clone = task.loadedMeshes[0].clone("tree2_clone", null);
-    tree2Clone!.position = new Vector3(-3, 0, 5);
+    const root = task.loadedMeshes[0];
+    const tree2Clone = root.clone("tree1_clone", null);
+    root.position = new Vector3(0, 0, 2);
+    root.scaling = new Vector3(0.85, 0.85, 0.85);
+    mergeAndAggregate(task.loadedMeshes, scene );
+    // Cloned tree2
+    tree2Clone!.position = new Vector3(-5, 0, 6);
+    tree2Clone!.scaling = new Vector3(0.9, 0.9, 0.9);
+        // Get clone and all its child meshes as an array
+    const cloneMeshes = [tree2Clone!, ...tree2Clone!.getChildMeshes()];
+    mergeAndAggregate(cloneMeshes, scene);
   };
 
   const tree3 = assetsManager.addMeshTask(
-    "tree1 task",
+    "tree3 task",
     "",
-    "./assets/nature/glTF/",
+    "./assets/nature/gltf/",
     "CommonTree_3.gltf"
   );
   tree3.onSuccess = function (task) {
-    task.loadedMeshes[0].position = new Vector3(-3, 0, 2);
-    task.loadedMeshes[0].scaling = new Vector3(0.5, 0.5, 0.5);
-    // Clone tree3
-    const tree3Clone = task.loadedMeshes[0].clone("tree3_clone", null);
-    tree3Clone!.position = new Vector3(3, 0, 5);
+    const root = task.loadedMeshes[0];
+    const tree3Clone = root.clone("tree3_clone", null);
+    root.position = new Vector3(-5, 0, 2);
+    root.scaling = new Vector3(0.9, 0.9, 0.9);
+    mergeAndAggregate(task.loadedMeshes, scene );
+    // Cloned tree3
+    tree3Clone!.position = new Vector3(5, 0, 6);
+    tree3Clone!.scaling = new Vector3(0.75, 0.75, 0.75);
+           // Get clone and all its child meshes as an array
+    const cloneMeshes = [tree3Clone!, ...tree3Clone!.getChildMeshes()];
+    mergeAndAggregate(cloneMeshes, scene); 
   };
+
 
   assetsManager.onTaskErrorObservable.add(function (task) {
     console.log(
@@ -154,6 +184,8 @@ function addAssets(scene: Scene) {
   });
   return assetsManager;
 }
+
+
 
 
 export default async function createStartScene(engine: Engine) {
