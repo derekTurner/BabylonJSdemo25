@@ -17,11 +17,7 @@ babylonProj/village/
 
 ## Week 11
 
-motion 01 dude moves WASD file uses old scene loader and audio elements are removed as the old audio engine is replaced in babylonJS version 8
-
-This  needs reworking for new loader and audio engine
-
-the notes on keymotion have been updated and should be set back to the old notes. 
+Motion 01 updated uses new audio engine for static and streamed sounds and assetsManager for loading of dude character.
 
 Motion02 - adds pick motion to spin the player around the y axis.
 
