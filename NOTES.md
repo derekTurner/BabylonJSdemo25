@@ -21,7 +21,7 @@ Motion 01 updated uses new audio engine for static and streamed sounds and asset
 
 Motion02 - adds pick motion to spin the player around the y axis. Working on this.
 
-Motion03 - adds baked animations to the player mesh.
+Motion03 - adds baked animations to the player mesh uses assetsContainer
 
 
 
