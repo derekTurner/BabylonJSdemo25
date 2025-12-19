@@ -18,11 +18,14 @@ import {
   StreamingSound,
   StaticSound,
   MeshAssetTask,
-  Nullable
+  Nullable,
 } from "@babylonjs/core";
+import "@babylonjs/loaders/glTF/2.0";
 
 // Load audio sounds into an associative array
-async function loadSounds(): Promise<{ [key: string]: StreamingSound | StaticSound }> {
+async function loadSounds(): Promise<{
+  [key: string]: StreamingSound | StaticSound;
+}> {
   const audioEngine = await CreateAudioEngineAsync();
 
   // Create sounds
@@ -30,7 +33,7 @@ async function loadSounds(): Promise<{ [key: string]: StreamingSound | StaticSou
     const arcade: StreamingSound = await CreateStreamingSoundAsync(
       "arcade",
       "./assets/audio/arcade-kid.mp3",
-      { loop: true , volume: 0.1}
+      { loop: true, volume: 0.1 }
     );
 
     const click: StaticSound = await CreateSoundAsync(
@@ -39,10 +42,14 @@ async function loadSounds(): Promise<{ [key: string]: StreamingSound | StaticSou
       { playbackRate: 0.9 }
     );
 
-  // Unlock audio context on first user gesture
-  document.addEventListener("click", async () => {
-    await audioEngine.unlockAsync();
-  }, { once: true });
+    // Unlock audio context on first user gesture
+    document.addEventListener(
+      "click",
+      async () => {
+        await audioEngine.unlockAsync();
+      },
+      { once: true }
+    );
 
     // Return associative array of sounds
     const sounds: { [key: string]: StreamingSound | StaticSound } = {
@@ -59,8 +66,8 @@ async function loadSounds(): Promise<{ [key: string]: StreamingSound | StaticSou
 function createGround(scene: Scene) {
   const groundMaterial = new StandardMaterial("groundMaterial");
   const groundTexture = new Texture("./assets/textures/wood.jpg");
-  groundTexture.uScale  = 4.0; //Repeat 4 times on the Vertical Axes
-  groundTexture.vScale  = 4.0; //Repeat 4 times on the Horizontal Axes
+  groundTexture.uScale = 4.0; //Repeat 4 times on the Vertical Axes
+  groundTexture.vScale = 4.0; //Repeat 4 times on the Horizontal Axes
   groundMaterial.diffuseTexture = groundTexture;
   groundMaterial.diffuseTexture.hasAlpha = true;
 
@@ -75,7 +82,6 @@ function createGround(scene: Scene) {
   return ground;
 }
 
-
 function createHemisphericLight(scene: Scene) {
   const light = new HemisphericLight(
     "light",
@@ -88,7 +94,6 @@ function createHemisphericLight(scene: Scene) {
   light.groundColor = new Color3(0, 0.2, 0.7);
   return light;
 }
-
 
 function createArcRotateCamera(scene: Scene) {
   let camAlpha = -Math.PI / 2,
@@ -114,24 +119,21 @@ function createArcRotateCamera(scene: Scene) {
   return camera;
 }
 
-function addAssets(scene: Scene): AbstractMesh | null {
+function addAssets(scene: Scene): Promise<AbstractMesh> {
   const assetsManager = new AssetsManager(scene);
   let player: AbstractMesh | null = null;
-  
-  const meshTask:MeshAssetTask = assetsManager.addMeshTask(
+
+  const meshTask: MeshAssetTask = assetsManager.addMeshTask(
     "character",
     "",
     "./assets/models/men/",
-    "dummy3.babylon"
+    "Xbot.glb"
   );
-
-
 
   meshTask.onSuccess = function (task) {
     if (task.loadedMeshes.length > 0) {
-      let player = task.loadedMeshes[0];
-      player.position.x = 0;
-      player.position.y = 0;
+      player = task.loadedMeshes[0];
+      player.position = new Vector3(0,0,0);
       player.scaling = new Vector3(1, 1, 1);
       player.rotation = new Vector3(0, 1.5, 0);
     }
@@ -144,8 +146,15 @@ function addAssets(scene: Scene): AbstractMesh | null {
       task.errorObject.exception
     );
   });
-  assetsManager.load();
-  return player;
+
+  return new Promise((resolve) => {
+    assetsManager.onFinish = () => {
+      if (player) {
+        resolve(player);
+      }
+    };
+    assetsManager.load();
+  });
 }
 
 export default async function createStartScene(engine: Engine) {
@@ -154,8 +163,8 @@ export default async function createStartScene(engine: Engine) {
   let camera = createArcRotateCamera(scene);
   let ground = createGround(scene);
   let sounds = await loadSounds();
-  const player = addAssets(scene);
-  
+  const player = await addAssets(scene);
+
   sounds.arcade.play();
 
   let that: SceneData = {
@@ -168,4 +177,3 @@ export default async function createStartScene(engine: Engine) {
   };
   return that;
 }
-
