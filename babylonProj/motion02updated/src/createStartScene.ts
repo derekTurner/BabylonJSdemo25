@@ -19,6 +19,7 @@ import {
   StaticSound,
   MeshAssetTask,
   Nullable,
+  Quaternion,
 } from "@babylonjs/core";
 import "@babylonjs/loaders/glTF/2.0";
 
@@ -79,6 +80,7 @@ function createGround(scene: Scene) {
   );
 
   ground.material = groundMaterial;
+  ground.isPickable = false;
   return ground;
 }
 
@@ -115,7 +117,7 @@ function createArcRotateCamera(scene: Scene) {
   camera.lowerBetaLimit = 0;
   camera.upperBetaLimit = Math.PI / 2.02;
 
-  // camera.attachControl(true);
+  camera.attachControl(true);
   return camera;
 }
 
@@ -133,9 +135,14 @@ function addAssets(scene: Scene): Promise<AbstractMesh> {
   meshTask.onSuccess = function (task) {
     if (task.loadedMeshes.length > 0) {
       player = task.loadedMeshes[0];
-      player.position = new Vector3(0,0,0);
+      player.position = new Vector3(0, 0, 0);
       player.scaling = new Vector3(1, 1, 1);
-      player.rotation = new Vector3(0, 1.5, 0);
+      //player.rotation = new Vector3(0, 1.5, 0);
+      const axis:Vector3 = new Vector3(0,1,0).normalize();
+      let angle = 0.25 *2 * Math.PI;
+      player.rotationQuaternion = Quaternion.RotationAxis(axis, angle);
+      const delta =  Quaternion.RotationAxis(axis, 2);
+      player.rotationQuaternion = player.rotationQuaternion *= delta;
     }
   };
 

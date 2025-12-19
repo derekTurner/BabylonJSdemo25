@@ -17,9 +17,9 @@ babylonProj/village/
 
 ## Week 11
 
-Motion 01 updated uses new audio engine for static and streamed sounds and assetsManager for loading of dude character.
+Motion 01 updated uses new audio engine for static and streamed sounds and assetsManager for loading of dude character. Replaced Dude with Xbot.
 
-Motion02 - adds pick motion to spin the player around the y axis.
+Motion02 - adds pick motion to spin the player around the y axis. Working on this.
 
 Motion03 - adds baked animations to the player mesh.
 

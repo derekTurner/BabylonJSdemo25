@@ -13,7 +13,6 @@ document.body.appendChild(canvas);
 
 let eng = new Engine(canvas, true, {}, true);
 let startScene = await createStartScene(eng);
-console.log(startScene.player)
 createRunScene(startScene);
 
 eng.runRenderLoop(() => {
