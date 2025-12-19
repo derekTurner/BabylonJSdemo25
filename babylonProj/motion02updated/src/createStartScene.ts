@@ -141,8 +141,6 @@ function addAssets(scene: Scene): Promise<AbstractMesh> {
       const axis:Vector3 = new Vector3(0,1,0).normalize();
       let angle = 0.25 *2 * Math.PI;
       player.rotationQuaternion = Quaternion.RotationAxis(axis, angle);
-      const delta =  Quaternion.RotationAxis(axis, 2);
-      player.rotationQuaternion = player.rotationQuaternion *= delta;
     }
   };
 
